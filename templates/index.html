@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Timezoned Timestamp Example</title>
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="{{ url_for('static', filename='js/moment.js') }}"></script>
+		<script>
+			var timestamp = {{ timestamp }};
+
+			Date.prototype.toUTC = function(format) {
+				return moment.utc(this).format("YYYY-MM-DD h:mm:ss");
+			}
+
+			$(document).ready(function() {
+
+				// populate from server timestamp
+				var table = $("#from")
+				table.find("td").eq(0).text(timestamp);
+				table.find("td").eq(1).text(moment(timestamp).format("YYYY-MM-DD h:mm:ss"));
+
+				// set to server values
+				var d = new Date();
+				$("#to1 td").eq(0).text(d.toString());
+				$("#to1 td").eq(1).text(d.toUTC("YYYY-MM-DD h:mm:ss"));
+			});
+		</script>
+		<style>
+			.times td {
+				border: 1px solid #CBCBCB;
+				width: 200px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Timezoned Timestamp Example</h1>
+
+		<h2>Receiving From Server</h2>
+
+		<p>A UTC timestamp from the server is converted to local timestamp using momentjs.</p>
+
+		<table id="from" class="times">
+			<tr>
+				<th>Stored (UTC)</th>
+				<th>Displayed (Local)</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+
+		<h2>Sending To Server</h2>
+
+		<p>The local timestamp is converted to a UTC timestamp using momentjs.</p>
+		
+		<table id="to1" class="times">
+			<tr>
+				<th>Displayed (Local)</th>
+				<th>Converted (UTC)</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</body>
+</html>
